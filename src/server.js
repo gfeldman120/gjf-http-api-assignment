@@ -6,8 +6,13 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 // This is where I choose which URLs do what
 const urlStruct = {
   "/": responseHandler.getIndex,
+  "/success": responseHandler.getIndex,
   default: responseHandler.getIndex
 };
+
+const handlePost = (request, response, parsedUrl) => {
+  
+}
 
 const onRequest = (request, response) => {
   const protocol = request.connection.encrypted ? 'https' : 'http';
