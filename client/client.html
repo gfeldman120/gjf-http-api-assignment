@@ -6,6 +6,49 @@
   
   <script>
 
+    const handleResponse = async (response) => {
+      const content = document.querySelector('#content');
+      switch(response.status) {
+        case 200: 
+          content.innerHTML = `<b>Success!</b>`;
+          break;
+        case 201:
+          content.innerHTML = `<b>Created!</b>`;
+          break;
+        case 400: 
+          content.innerHTML = `<b>Bad Request...</b>`;
+          break;
+        case 404:
+          content.innerHTML = `<b>Resource Not Found...</b>`;
+          break;
+        default: 
+          content.innerHTML = `<b>Not implemented...</b>`;
+          break;
+      }
+      let object = await response.json();
+      let jsonString = JSON.stringify(object);
+      content.innerHTML += `<p>${jsonString}</p>`;
+    }
+
+    const getRequest = async () => {
+      const url = document.querySelector('#page').value;
+      const dataType = document.querySelector('#type').value;
+      let response = await fetch(url, {
+        method,
+        headers: {
+          'Accept': dataType
+        },
+      });
+      handleResponse(response);
+    }
+
+    const init = () => {
+      const sendButton = document.querySelector('#send');
+      sendButton.addEventListener('click', () => {getRequest});
+    }
+
+    window.onload = init;
+    
   </script>
 </head>
 <body>
