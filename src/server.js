@@ -1,38 +1,58 @@
+// Require files and setup port
 const http = require('http');
-const query = require('querystring');
 const responseHandler = require('./responses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const onRequest = (request, response) => {
+  // Setup parsed URL for switch statement
   const protocol = request.connection.encrypted ? 'https' : 'http';
   const parsedUrl = new URL(request.url, `${protocol}://${request.headers.host}`);
   
-  // Array of all accepted types
+  // Set array of all accepted types
   request.acceptedTypes = request.headers.accept ? request.headers.accept.split(',') : [];
 
+  // Change which function to call based on pathname and parameters
   switch (parsedUrl.pathname) {
     case '/':
       responseHandler.getIndex(request, response);
       break;
+    case '/style.css':
+      responseHandler.getCSS(request, response);
+      break;
     case '/success':
+      responseHandler.successfulRequest(request, response);
       break;
     case '/badRequest':
+      if(parsedUrl.searchParams.get('valid') === 'true') {
+          responseHandler.validBadRequest(request, response);
+          break;
+      }
+      responseHandler.badRequest(request, response);
       break;
     case '/unauthorized':
+      if(parsedUrl.searchParams.get('loggedIn') === 'yes') {
+          responseHandler.loggedInUnauthorizedRequest(request, response);
+          break;
+      }
+      responseHandler.unauthorizedRequest(request, response);
       break;
     case '/forbidden':
+      responseHandler.forbiddenRequest(request, response);
       break;
     case '/internal':
+      responseHandler.internalRequest(request, response);
       break;
     case '/notImplemented':
+      responseHandler.unimplementedRequest(request, response);
       break;
     default:
-      responseHandler.getCSS(request, response);
+      responseHandler.notFoundRequest(request, response);
       break;
   }
 };
 
+// Make the server
 http.createServer(onRequest).listen(port, () => {
   console.log(`Listening on 127.0.0.1:${port}`);
 });
