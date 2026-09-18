@@ -32,12 +32,16 @@
       // Check for header
       if (response.headers.get('Content-Type') === 'text/xml') {
         let xmlString = await response.text();
-        content.innerHTML += `<p>${xmlString}</p>`;
+        console.log(xmlString);
+        let result = `Message: ${xmlString.split('<id>')[0]}`;
+        content.innerHTML += `<p>${result}</p>`;
       }
       else {
         let object = await response.json();
         let jsonString = JSON.stringify(object);
-        content.innerHTML += `<p>${jsonString}</p>`;
+        console.log(jsonString);
+        let result = `Message: ${jsonString.split('message":"')[1].split('"')[0]}`;
+        content.innerHTML += `<p>${result}</p>`;
       }
     }
 

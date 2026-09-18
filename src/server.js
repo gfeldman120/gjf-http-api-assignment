@@ -4,6 +4,7 @@ const responseHandler = require('./responses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+// Get the request from the client and figure out what it is
 const onRequest = (request, response) => {
   // Setup parsed URL for switch statement
   const protocol = request.connection.encrypted ? 'https' : 'http';
@@ -24,6 +25,7 @@ const onRequest = (request, response) => {
       responseHandler.successfulRequest(request, response);
       break;
     case '/badRequest':
+      // Make a different request if the parameter exists and is 'true'
       if(parsedUrl.searchParams.get('valid') === 'true') {
           responseHandler.validBadRequest(request, response);
           break;
@@ -31,6 +33,7 @@ const onRequest = (request, response) => {
       responseHandler.badRequest(request, response);
       break;
     case '/unauthorized':
+      // Make a different request if the parameter exists and is 'yes'
       if(parsedUrl.searchParams.get('loggedIn') === 'yes') {
           responseHandler.loggedInUnauthorizedRequest(request, response);
           break;
