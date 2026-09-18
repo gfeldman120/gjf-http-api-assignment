@@ -11,22 +11,28 @@
       // Change page output based on status
       switch(response.status) {
         case 200: 
-          content.innerHTML = `<b>Success!</b>`;
-          break;
-        case 201:
-          content.innerHTML = `<b>Created!</b>`;
+          content.innerHTML = `<b>Success</b>`;
           break;
         case 400: 
-          content.innerHTML = `<b>Bad Request...</b>`;
+          content.innerHTML = `<b>Bad Request</b>`;
           break;
         case 401: 
-          content.innerHTML = `<b>Unauthorized...</b>`;
+          content.innerHTML = `<b>Unauthorized</b>`;
+          break;
+        case 403:
+          content.innerHTML = `<b>Forbidden</b>`;
           break;
         case 404:
-          content.innerHTML = `<b>Resource Not Found...</b>`;
+          content.innerHTML = `<b>Resource Not Found</b>`;
           break;
-        default: 
-          content.innerHTML = `<b>Not implemented...</b>`;
+        case 500:
+          content.innerHTML = `<b>Internal Server Error</b>`;
+          break;
+        case 501:
+          content.innerHTML = `<b>Not implemented</b>`;
+          break;
+        default:
+          content.innerHTML = `<b>client.html Error</b>`;
           break;
       }
       // Check for header
